@@ -1,9 +1,10 @@
-from transformers import AlbertTokenizer, AlbertForSequenceClassification, Trainer, TrainingArguments
-from ALBERT_preprocess import load_corpus_and_labels
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from datasets import Dataset
+
+from transformers import AlbertTokenizer, AlbertForSequenceClassification, Trainer, TrainingArguments
 from torch.utils.data import random_split
 
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from get_data import load_corpus_and_labels
 
 tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
 model = AlbertForSequenceClassification.from_pretrained('albert-base-v2')
@@ -68,5 +69,5 @@ trainer = Trainer(
 )
 trainer.train()
 
-trainer.save_model('models')
-tokenizer.save_pretrained('models')
+trainer.save_model('models/TEXT')
+tokenizer.save_pretrained('models/TEXT')

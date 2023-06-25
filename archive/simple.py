@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_selection import chi2
 
-from ALBERT_preprocess import load_corpus_and_labels
+from get_data import load_corpus_and_labels
 
 CORPUS, LABELS = load_corpus_and_labels()
 
