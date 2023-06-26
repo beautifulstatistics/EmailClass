@@ -1,27 +1,23 @@
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.metrics import mean_squared_error
 from datasets import Dataset
 
-from transformers import AlbertTokenizer, AlbertForSequenceClassification, Trainer, TrainingArguments
+from transformers import AlbertTokenizer, AlbertForSequenceRegression, Trainer, TrainingArguments
 from torch.utils.data import random_split
 
 from get_data import load_corpus_and_labels
 
 tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
-model = AlbertForSequenceClassification.from_pretrained('albert-base-v2')
+model = AlbertForSequenceRegression.from_pretrained('albert-base-v2')
 
 def tokenize_function(examples):
     return tokenizer(examples['text'], padding='max_length', truncation=True, max_length=512)
 
 def compute_metrics(pred):
     labels = pred.label_ids
-    preds = pred.predictions.argmax(-1)
-    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
-    acc = accuracy_score(labels, preds)
+    preds = pred.predictions
+    mse = mean_squared_error(labels, preds)
     return {
-        'accuracy': acc,
-        'f1': f1,
-        'precision': precision,
-        'recall': recall
+        'mse': mse
     }
 
 CORPUS, LABELS = load_corpus_and_labels()
